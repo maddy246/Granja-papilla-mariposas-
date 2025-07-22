@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>  <html lang="es">  
+<head>  
+  <meta charset="UTF-8" />  
+  <title>BuscaMariposas</title>  
+  <!-- Tipografía Yellix Black -->  
+  <link href="https://fonts.googleapis.com/css2?family=Yellix:wght@900&display=swap" rel="stylesheet" />  
+  <style>  
+    body {  
+      margin: 0;  
+      font-family: 'Yellix', sans-serif;  
+      background-image: url('https://i.postimg.cc/3J6tpsyp/IMG-20250717-WA0014.jpg');  
+      background-size: cover;  
+      background-position: center;  
+      background-repeat: no-repeat;  
+      display: flex;  
+      flex-direction: column;  
+      align-items: center;  
+      justify-content: center;  
+      min-height: 100vh;  
+      color: white;  
+      text-shadow: 1px 1px 3px black;  
+    }  h1 {  
+  font-weight: 900;  
+  font-size: 40px;  
+  margin: 20px 0 5px 0;  
+}  
+
+.instructions {  
+  font-weight: 900;  
+  font-size: 12px;  
+  background-color: rgba(0, 0, 0, 0.4);  
+  padding: 6px 10px;  
+  border-radius: 10px;  
+  margin-bottom: 10px;  
+  text-align: center;  
+  max-width: 90%;  
+}  
+
+#board {  
+  display: grid;  
+  grid-template-columns: repeat(10, 32px);  
+  grid-template-rows: repeat(10, 32px);  
+  gap: 2px;  
+  background-color: rgba(255, 255, 255, 0.8);  
+  padding: 10px;  
+  border-radius: 12px;  
+  box-shadow: 0 0 10px black;  
+  color: black;  
+}  
+
+.cell {  
+  width: 32px;  
+  height: 32px;  
+  background-color: #f0f0f0;  
+  border: 1px solid #ccc;  
+  display: flex;  
+  align-items: center;  
+  justify-content: center;  
+  cursor: pointer;  
+}  
+
+.cell img {  
+  width: 100%;  
+  height: 100%;  
+  object-fit: contain;  
+}  
+
+.hidden {  
+  background-color: #ddd;  
+}  
+
+.bottom-panel {  
+  margin-top: 20px;  
+  text-align: center;  
+  font-weight: 900;  
+  color: white;  
+  text-shadow: 1px 1px 3px black;  
+}  
+
+.button {  
+  background-color: #a3e4d7;  
+  border: none;  
+  padding: 10px 20px;  
+  margin: 10px;  
+  font-size: 16px;  
+  cursor: pointer;  
+  border-radius: 8px;  
+  font-weight: 900;  
+  font-family: 'Yellix', sans-serif;  
+}  
+
+#score,  
+#timer {  
+  font-weight: 900;  
+  font-size: 18px;  
+  margin: 5px;  
+}  
+
+@keyframes shake {  
+  0%,  
+  100% {  
+    transform: translateX(0);  
+  }  
+  20%,  
+  60% {  
+    transform: translateX(-10px);  
+  }  
+  40%,  
+  80% {  
+    transform: translateX(10px);  
+  }  
+}  
+
+.shake {  
+  animation: shake 0.5s;  
+}  
+
+.footer-image {  
+  position: fixed;  
+  bottom: 10px;  
+  left: 10px;  
+  z-index: 10;  
+}  
+
+.footer-image img {  
+  height: 30px;  
+  max-width: 100%;  
+}  
+
+@media (max-width: 600px) {  
+  .footer-image img {  
+    height: 24px;  
+  }  
+}  
+
+/* Panel de inicio */  
+#start-panel {  
+  position: fixed;  
+  top: 0;  
+  left: 0;  
+  width: 100vw;  
+  height: 100vh;  
+  background-image: url('https://i.postimg.cc/Dz7NK1BP/20250722-112110-0000.png');  
+  background-size: cover;  
+  background-position: center;  
+  background-repeat: no-repeat;  
+  display: flex;  
+  flex-direction: column;  
+  justify-content: center;  
+  align-items: center;  
+  z-index: 1000;  
+  font-family: 'Yellix', sans-serif;  
+  text-align: center;  
+  padding: 20px;  
+  color: #a3e4d7;  
+  text-shadow: 2px 2px 6px black;  
+}  
+
+#start-panel h1 {  
+  font-weight: 900;  
+  font-size: 60px;  
+  margin-bottom: 20px;  
+}  
+
+#start-panel .instructions {  
+  font-weight: 900;  
+  font-size: 18px;  
+  margin-bottom: 40px;  
+  max-width: 90%;  
+  background: none;  
+  padding: 0;  
+  border-radius: 0;  
+  color: #a3e4d7;  
+  text-shadow: 1px 1px 3px black;  
+}  
+
+#start-panel button {  
+  font-size: 24px;  
+  padding: 12px 40px;  
+  background-color: #a3e4d7;  
+  border: none;  
+  border-radius: 12px;  
+  cursor: pointer;  
+  transition: background-color 0.3s ease;  
+  font-weight: 900;  
+  font-family: 'Yellix', sans-serif;  
+  color: black;  
+}  
+
+#start-panel button:hover {  
+  background-color: #75c8be;  
+  color: white;  
+}
+
+  </style>  
+</head>  
+<body>  
+  <!-- Panel de inicio -->  
+  <div id="start-panel">  
+    <h1>BuscaMariposas</h1>  
+    <div class="instructions">  
+      🦋 Encuentra las 10 mariposas pulsando los cuadros.<br />  
+      🐛 Evita ser comido por el depredador 🐸 mientras juegas.  
+    </div>  
+    <button onclick="startGame()">Iniciar Juego</button>  
+  </div>    <!-- Contenido del juego -->    <h1 style="display:none;">BuscaMariposas</h1>    <div class="instructions" style="display:none;">  
+    🦋 <strong>Instrucciones</strong> 🦋<br />  
+    🐛 Encuentra las 10 mariposas pulsando los cuadros. Te encontrarás con orugas mientras juegas, pero evita ser comida por el depredador 🐸  
+  </div>    <div id="board" style="display:none;"></div>    <div class="bottom-panel" style="display:none;">  
+    <div id="score">Mariposas encontradas: 0</div>  
+    <div id="timer">⏱️ Tiempo: 0</div>  
+    <button class="button" onclick="startGame()">Reiniciar Juego</button>  
+  </div>    <div class="footer-image">  
+    <img src="https://i.postimg.cc/65kQnWCC/IMG-20250718-WA0007.jpg" alt="Decoración inferior" />  
+  </div>    <script>  
+    const BUTTERFLY_IMG = 'https://i.postimg.cc/8PcxmLT6/IMG-20250718-WA0010.jpg';  
+    const MINE_IMG = 'https://i.postimg.cc/yx3fZyzh/IMG-20250718-WA0009.jpg';  
+    const EMPTY_IMG = 'https://i.postimg.cc/9Mm00LZS/IMG-20250718-WA0012.jpg';  
+  
+    let board = [];  
+    let foundButterflies = 0;  
+    let timer;  
+    let timeElapsed = 0;  
+    let gameActive = false;  
+  
+    function startGame() {  
+      // Ocultar panel de inicio  
+      const startPanel = document.getElementById('start-panel');  
+      if (startPanel.style.display !== 'none') {  
+        startPanel.style.display = 'none';  
+      }  
+  
+      // Mostrar elementos del juego  
+      document.querySelector('h1').style.display = 'block';  
+      document.querySelector('.instructions').style.display = 'block';  
+      document.getElementById('board').style.display = 'grid';  
+      document.querySelector('.bottom-panel').style.display = 'block';  
+  
+      board = Array(10)  
+        .fill(null)  
+        .map(() => Array(10).fill(null));  
+      placeItems();  
+      renderBoard();  
+      gameActive = true;  
+      foundButterflies = 0;  
+      document.getElementById('score').innerText = `Mariposas encontradas: ${foundButterflies}`;  
+      timeElapsed = 0;  
+      document.getElementById('timer').innerText = `⏱️ Tiempo: ${timeElapsed}`;  
+      clearInterval(timer);  
+      timer = setInterval(() => {  
+        timeElapsed++;  
+        document.getElementById('timer').innerText = `⏱️ Tiempo: ${timeElapsed}`;  
+      }, 1000);  
+      document.body.classList.remove('shake');  
+    }  
+  
+    function placeItems() {  
+      for (let i = 0; i < 10; i++) placeRandom('butterfly');  
+      for (let i = 0; i < 10; i++) placeRandom('mine');  
+    }  
+  
+    function placeRandom(item) {  
+      let x, y;  
+      do {  
+        x = Math.floor(Math.random() * 10);  
+        y = Math.floor(Math.random() * 10);  
+      } while (board[x][y] !== null);  
+      board[x][y] = item;  
+    }  
+  
+    function renderBoard() {  
+      const boardDiv = document.getElementById('board');  
+      boardDiv.innerHTML = '';  
+      for (let x = 0; x < 10; x++) {  
+        for (let y = 0; y < 10; y++) {  
+          const cell = document.createElement('div');  
+          cell.className = 'cell hidden';  
+          cell.onclick = () => handleClick(x, y, cell);  
+          boardDiv.appendChild(cell);  
+        }  
+      }  
+    }  
+  
+    function handleClick(x, y, cell) {  
+      if (!gameActive || cell.innerHTML !== '') return;  
+  
+      const content = board[x][y];  
+      const img = document.createElement('img');  
+  
+      if (content === 'butterfly') {  
+        img.src = BUTTERFLY_IMG;  
+        cell.appendChild(img);  
+        foundButterflies++;  
+        document.getElementById('score').innerText = `Mariposas encontradas: ${foundButterflies}`;  
+        if (foundButterflies === 10) {  
+          clearInterval(timer);  
+          alert('🎉 ¡Felicidades! 🐛');  
+          endGame();  
+        }  
+      } else if (content === 'mine') {  
+        img.src = MINE_IMG;  
+        cell.appendChild(img);  
+        shakeScreen();  
+        alert('🐸 ¡Perdiste! 🕷️');  
+        endGame();  
+      } else {  
+        img.src = EMPTY_IMG;  
+        cell.appendChild(img);  
+      }  
+  
+      cell.classList.remove('hidden');  
+    }  
+  
+    function endGame() {  
+      gameActive = false;  
+      clearInterval(timer);  
+    }  
+  
+    function shakeScreen() {  
+      document.body.classList.add('shake');  
+      setTimeout(() => document.body.classList.remove('shake'), 500);  
+    }  
+  </script>  </body>  
+</html>
